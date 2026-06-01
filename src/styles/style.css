@@ -1,0 +1,130 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1 {
+  color: #ffffff;
+  width: fit-content;
+}
+
+p {
+  padding: 0;
+  margin: 0;
+}
+
+#header {
+  background: #718a88;
+  margin: 0;
+  padding: 10px;
+}
+
+#content {
+  margin: 20px;
+}
+
+select, input {
+  border: none;
+  margin-bottom: 20px;
+  padding: 5px;
+  background-color: #cecece;
+  height: 40px;
+  border-radius: 7px;
+  margin-right: 20px;
+}
+
+button {
+  border: none;
+  margin-top: 20px;
+  padding: 5px;
+  background-color: #cecece;
+  height: 40px;
+  border-radius: 7px;
+  transition: transform 0.4s ease;
+  margin-right: 20px;
+}
+
+#cards_grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  justify-items: center;
+}
+
+.appointment_card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #9eb3b1;
+  padding: 10px;
+  border-radius: 7px;
+  width: 90%;
+}
+
+.appointment_card p {
+  color: white;
+  background-color: #718a88;
+  border-radius: 7px;
+  padding: 5px;
+  margin: 5px;
+  width: 100%;
+}
+
+.appointment_card button {
+  background-color: #ffffff;
+  max-width: 300px;
+}
+
+#form {
+  background-color: #9eb3b1;
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  border-radius: 7px;
+  padding: 10px;
+}
+
+#form h2 {
+  color: #ffffff;
+  margin: 10px 0 10px 0;
+}
+
+#doctor_selector,
+#date_selector,
+#time_selector {
+  display: flex;
+  flex-direction: column;
+  background-color: #718a88;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 7px;
+}
+
+#form button, #form select, #form input {
+  width: 50%;
+  background-color: #ffffff;
+}
+
+#confirm_button {
+  background-color: #ffffff;
+  margin: 0 auto;
+}
+
+#form p:last-child {
+  margin: 0 auto;
+}
+
+button:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+@media (max-width: 860px) {
+  #cards_grid{
+    grid-template-columns: 1fr;
+  }
+}
