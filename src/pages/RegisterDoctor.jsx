@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export default function RegisterDoctor() {
-  const navigate = useNavigate();
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [specialty, setSpecialty] = useState("");
@@ -21,10 +19,6 @@ export default function RegisterDoctor() {
 
     const data = await res.json();
     setMessage(data.message);
-  }
-  
-  function goBack(){
-    navigate("/")
   }
 
   return (
@@ -58,7 +52,6 @@ export default function RegisterDoctor() {
       </select>
       <button onClick={handleSubmit}>Registrar</button>
       {message && <p>{message}</p>}
-      <button onClick={goBack}>Volver</button>
     </div>
   );
 }

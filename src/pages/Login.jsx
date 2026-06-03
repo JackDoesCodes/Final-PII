@@ -16,7 +16,7 @@ function Login() {
         body: JSON.stringify({ user, password }),
       });
       const data = await res.json();
-      if (!res.ok){
+      if (!res.ok) {
         return setError(data.message);
       }
       localStorage.setItem("token", data.token);
@@ -28,20 +28,24 @@ function Login() {
 
   return (
     <div>
-      <h2>Iniciar sesión</h2>
-      <input
-        value={user}
-        onChange={(e) => setUsuario(e.target.value)}
-        placeholder="Usuario"
-      />
-      <input
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Contraseña"
-        type="password"
-      />
-      <button onClick={handleLogin}>Entrar</button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <div id="header">
+        <h1>Iniciar sesión</h1>
+      </div>
+      <div id="content">
+        <input
+          value={user}
+          onChange={(e) => setUsuario(e.target.value)}
+          placeholder="Usuario"
+        />
+        <input
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Contraseña"
+          type="password"
+        />
+        <button onClick={handleLogin}>Ingresar</button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+      </div>
     </div>
   );
 }

@@ -27,7 +27,8 @@ p {
   margin: 20px;
 }
 
-select, input {
+select,
+input {
   border: none;
   margin-bottom: 20px;
   padding: 5px;
@@ -45,7 +46,9 @@ button {
   height: 40px;
   border-radius: 7px;
   transition: transform 0.4s ease;
+  margin-top: 20px;
   margin-right: 20px;
+  margin-bottom: 20px;
 }
 
 #cards_grid {
@@ -104,7 +107,9 @@ button {
   border-radius: 7px;
 }
 
-#form button, #form select, #form input {
+#form button,
+#form select,
+#form input {
   width: 50%;
   background-color: #ffffff;
 }
@@ -118,13 +123,48 @@ button {
   margin: 0 auto;
 }
 
+#users_table, #appointments_table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 7px;
+  text-align: center;
+}
+
+table, th, td {
+  border-collapse: collapse;
+}
+
+th {
+  color: white;
+  padding: 10px;
+}
+
+th, td {
+  border-bottom: 1px solid #ddd;
+  padding-right: 40px;
+}
+
+th:last-child, td:last-child {
+  padding-right: 0px;
+}
+
+thead{
+  background-color: #718a88;
+}
+
 button:hover {
   transform: scale(1.1);
   cursor: pointer;
 }
 
 @media (max-width: 860px) {
-  #cards_grid{
+  #cards_grid {
     grid-template-columns: 1fr;
+  }
+
+  th, td{
+    padding: 5px;
+    font-size: 11px;
   }
 }

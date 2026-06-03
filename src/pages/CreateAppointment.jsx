@@ -127,6 +127,7 @@ function RegisterAppointment() {
         <h1>Pedir un turno</h1>
       </div>
       <div id="content">
+        <button onClick={() => navigate("/")}>Volver</button>
         <div id="form">
           <DoctorSelection value={doctor} onChange={setDoctor} />
           <DateSelection value={date} onChange={setDate} />
@@ -136,7 +137,6 @@ function RegisterAppointment() {
           </button>
           {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
-        <button onClick={() => navigate("/")}>Volver</button>
       </div>
     </div>
   );

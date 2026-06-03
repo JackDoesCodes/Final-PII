@@ -83,6 +83,7 @@ function Appointments() {
         <h1>Mis turnos</h1>
       </div>
       <div id="content">
+        <button onClick={() => navigate("/")}>Volver</button>
         <select
           value={filterStatus}
           onChange={(event) => setFilterStatus(event.target.value)}
@@ -121,7 +122,7 @@ function Appointments() {
           ) : (
             filtered.map((appointment) => (
               <div key={appointment._id} className="appointment_card">
-                <p>Doctor: {capitalizeWords(appointment.doctor.user)} - </p>
+                <p>Doctor: {capitalizeWords(appointment.doctor.user)}</p>
                 <p>
                   Especialidad: {capitalizeWords(appointment.doctor.specialty)}
                 </p>
@@ -138,7 +139,6 @@ function Appointments() {
             ))
           )}
         </div>
-        <button onClick={() => navigate("/")}>Volver</button>
       </div>
     </div>
   );

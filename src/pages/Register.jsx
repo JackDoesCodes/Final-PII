@@ -15,9 +15,7 @@ function Register() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user, password }),
       });
-      const data = await res.json();
-      if (!res.ok) return setError(data.message);
-      navigate("/");
+      if (!res.ok) navigate("/");
     } catch {
       setError("Error al conectar con el servidor");
     }
@@ -25,20 +23,24 @@ function Register() {
 
   return (
     <div>
-      <h2>Registrarse</h2>
-      <input
-        value={user}
-        onChange={(e) => setUser(e.target.value)}
-        placeholder="Usuario"
-      />
-      <input
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Contraseña"
-        type="password"
-      />
-      <button onClick={handleLogin}>Entrar</button>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      <div id="header">
+        <h1>Registrarse</h1>
+      </div>
+      <div id="content">
+        <input
+          value={user}
+          onChange={(e) => setUser(e.target.value)}
+          placeholder="Usuario"
+        />
+        <input
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Contraseña"
+          type="password"
+        />
+        <button onClick={handleLogin}>Registrarse</button>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+      </div>
     </div>
   );
 }

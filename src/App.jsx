@@ -5,7 +5,7 @@ import Register from "./pages/Register";
 import CreateAppointment from "./pages/CreateAppointment";
 import Appointments from "./pages/Appointments";
 import RegisterDoctor from "./pages/RegisterDoctor";
-import AdminPanel from "./pages/adminPanel";
+import AdminPanel from "./pages/AdminPanel";
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
@@ -25,6 +25,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route
@@ -40,14 +41,6 @@ function App() {
           element={
             <PrivateRoute>
               <Appointments />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/"
-          element={
-            <PrivateRoute>
-              <Home />
             </PrivateRoute>
           }
         />
