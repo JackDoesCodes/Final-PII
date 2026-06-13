@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { capitalizeWords } from "../../utils/stringManipulation";
+import isologo from '../assets/isologo.png';
+import bgImage from '../assets/pexels-gustavo-fring.jpg';
 
 function Appointments() {
   const [appointments, setAppointments] = useState([]);
@@ -9,13 +12,6 @@ function Appointments() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-
-  function capitalizeWords(str) {
-    return str
-      .split(" ")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  }
 
   async function handleUpdate(appointmentId) {
     const confirmed = window.confirm(
@@ -55,7 +51,7 @@ function Appointments() {
   }, [token]);
 
   const doctors = [
-    ...new Set(appointments.map((appointment) => appointment.doctor.user)),
+    ...new Set(appointments.map((appointment) => appointment.doctor.name)),
   ];
 
   const specialties = [
@@ -74,13 +70,14 @@ function Appointments() {
     )
     .filter(
       (appointment) =>
-        filterDoctor === "todos" || appointment.doctor.user === filterDoctor,
+        filterDoctor === "todos" || appointment.doctor.name === filterDoctor,
     );
 
   return (
     <div>
       <div id="header">
         <h1>Mis turnos</h1>
+        <img id="isologo" src={isologo} alt="Isologo" />
       </div>
       <div id="content">
         <button onClick={() => navigate("/")}>Volver</button>
@@ -122,7 +119,7 @@ function Appointments() {
           ) : (
             filtered.map((appointment) => (
               <div key={appointment._id} className="appointment_card">
-                <p>Doctor: {capitalizeWords(appointment.doctor.user)}</p>
+                <p>Doctor: {capitalizeWords(appointment.doctor.name)}</p>
                 <p>
                   Especialidad: {capitalizeWords(appointment.doctor.specialty)}
                 </p>
@@ -139,6 +136,7 @@ function Appointments() {
             ))
           )}
         </div>
+        <img id="bg_image" src={bgImage} alt="" />
       </div>
     </div>
   );

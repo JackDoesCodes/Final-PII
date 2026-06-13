@@ -12,12 +12,27 @@ h1 {
   width: fit-content;
 }
 
+#isologo{
+  width: 7rem;
+}
+
 p {
   padding: 0;
   margin: 0;
 }
 
+#bg_image {
+  position: fixed;
+  right: 0px;
+  bottom: 0px;
+  z-index: -1;
+  height: 88vh;
+}
+
 #header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background: #718a88;
   margin: 0;
   padding: 10px;

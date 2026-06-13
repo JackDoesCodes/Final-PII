@@ -1,21 +1,30 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import isologo from '../assets/isologo.png';
 
 function Register() {
-  const [user, setUser] = useState("");
+  const [name, setName] = useState("");
+  const [surname, setSurname] = useState("");
+  const [dni, setDni] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  async function handleLogin() {
+  async function handleRegistry() {
     setError("");
     try {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user, password }),
+        body: JSON.stringify({ name, surname, dni, password }),
       });
-      if (!res.ok) navigate("/");
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        navigate("/");
+      } else {
+        setError(data.message);
+      }
     } catch {
       setError("Error al conectar con el servidor");
     }
@@ -25,12 +34,23 @@ function Register() {
     <div>
       <div id="header">
         <h1>Registrarse</h1>
+        <img id="isologo" src={isologo} alt="Isologo" />
       </div>
       <div id="content">
         <input
-          value={user}
-          onChange={(e) => setUser(e.target.value)}
-          placeholder="Usuario"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Nombre"
+        />
+        <input
+          value={surname}
+          onChange={(e) => setSurname(e.target.value)}
+          placeholder="Apellido"
+        />
+        <input
+          value={dni}
+          onChange={(e) => setDni(e.target.value)}
+          placeholder="DNI"
         />
         <input
           value={password}
@@ -38,7 +58,7 @@ function Register() {
           placeholder="Contraseña"
           type="password"
         />
-        <button onClick={handleLogin}>Registrarse</button>
+        <button onClick={handleRegistry}>Registrarse</button>
         {error && <p style={{ color: "red" }}>{error}</p>}
       </div>
     </div>

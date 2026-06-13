@@ -1,5 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import "../styles/style.css";
+import { upperCaseFirstLetter } from "../../utils/stringManipulation";
+import isologo from "../assets/isologo.png";
+import bgImage from "../assets/pexels-matreding.jpg";
 
 function Home() {
   const navigate = useNavigate();
@@ -15,10 +18,11 @@ function Home() {
     <div>
       <div id="header">
         <h1>Inicio</h1>
+        <img id="isologo" src={isologo} alt="Isologo" />
       </div>
       {token ? (
         <div id="content">
-          <h2>Bienvenido, {payload.user}</h2>
+          <h2>Bienvenido, {upperCaseFirstLetter(payload.user)}</h2>
           <button onClick={closeSession}>Cerrar sesión</button>
           <button onClick={() => navigate("/create-appointment")}>
             Pedir turno
@@ -29,11 +33,13 @@ function Home() {
               Panel de admin
             </button>
           )}
+          <img id="bg_image" src={bgImage} alt="" />
         </div>
       ) : (
         <div id="content">
           <button onClick={() => navigate("/login")}>Iniciar sesión</button>
           <button onClick={() => navigate("/register")}>Registrarse</button>
+          <img id="bg_image" src={bgImage} alt="" />
         </div>
       )}
     </div>

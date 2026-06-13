@@ -84,6 +84,7 @@ app.post(
   verifyRole("admin"),
   registerDoctor,
 );
+// Ruta para obtener una lista con los usuarios
 app.get("/api/admin/users", verifyToken, verifyRole("admin"), getUsers);
 app.patch("/api/admin/users/:id", verifyToken, verifyRole("admin"), updateUser);
 app.delete(
@@ -92,18 +93,21 @@ app.delete(
   verifyRole("admin"),
   deleteUser,
 );
+// Ruta para obtener una lista con los turnos
 app.get(
   "/api/admin/appointments",
   verifyToken,
   verifyRole("admin"),
   getAdminAppointments,
 );
+// Ruta para actualizar un turno
 app.patch(
   "/api/admin/appointments/:id",
   verifyToken,
   verifyRole("admin"),
   updateAdminAppointment,
 );
+// Ruta para eliminar un turno
 app.delete(
   "/api/admin/appointments/:id",
   verifyToken,

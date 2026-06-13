@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import isologo from '../assets/isologo.png';
 
 function Login() {
-  const [user, setUsuario] = useState("");
+  const [dni, setDni] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ function Login() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user, password }),
+        body: JSON.stringify({ dni, password }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -29,13 +30,14 @@ function Login() {
   return (
     <div>
       <div id="header">
-        <h1>Iniciar sesión</h1>
+        <h1>Iniciar Sesión</h1>
+        <img id="isologo" src={isologo} alt="Isologo" />
       </div>
       <div id="content">
         <input
-          value={user}
-          onChange={(e) => setUsuario(e.target.value)}
-          placeholder="Usuario"
+          value={dni}
+          onChange={(e) => setDni(e.target.value)}
+          placeholder="DNI"
         />
         <input
           value={password}
@@ -43,7 +45,7 @@ function Login() {
           placeholder="Contraseña"
           type="password"
         />
-        <button onClick={handleLogin}>Ingresar</button>
+        <button onClick={handleLogin}>Iniciar Sesión</button>
         {error && <p style={{ color: "red" }}>{error}</p>}
       </div>
     </div>

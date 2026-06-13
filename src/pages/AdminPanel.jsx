@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import isologo from '../assets/isologo.png';
 
 function AdminPanel() {
   const [activeTable, setActiveTable] = useState("usuarios");
@@ -12,26 +13,6 @@ function AdminPanel() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-
-  useEffect(() => {
-    fetch("/api/admin/users", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) setUsers(data);
-      })
-      .catch(() => console.error("Error al obtener usuarios"));
-
-    fetch("/api/admin/appointments", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (Array.isArray(data)) setAppointments(data);
-      })
-      .catch(() => console.error("Error al obtener turnos"));
-  }, [token]);
 
   async function handleDeleteUser(id) {
     if (!window.confirm("¿Eliminar este usuario?")) return;
@@ -60,7 +41,11 @@ function AdminPanel() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(editUserData),
+        body: JSON.stringify({
+          ...editUserData,
+          name: editUserData.name.toLowerCase(),
+          surname: editUserData.surname.toLowerCase(),
+        }),
       });
       const updated = await res.json();
       setUsers((prev) => prev.map((u) => (u._id === id ? updated : u)));
@@ -112,10 +97,255 @@ function AdminPanel() {
     }
   }
 
+  function userTable() {
+    return (
+      <div id="users_table">
+        <h2>Usuarios</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Apellido</th>
+              <th>DNI</th>
+              <th>Rol</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user._id}>
+                {editingUserId === user._id ? (
+                  <>
+                    <td>
+                      <input
+                        value={editUserData.name}
+                        onChange={(e) =>
+                          setEditUserData({
+                            ...editUserData,
+                            name: e.target.value,
+                          })
+                        }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        value={editUserData.surname}
+                        onChange={(e) =>
+                          setEditUserData({
+                            ...editUserData,
+                            surname: e.target.value,
+                          })
+                        }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        value={editUserData.dni}
+                        onChange={(e) =>
+                          setEditUserData({
+                            ...editUserData,
+                            dni: e.target.value,
+                          })
+                        }
+                      />
+                    </td>
+                    <td>
+                      <select
+                        value={editUserData.role}
+                        onChange={(e) =>
+                          setEditUserData({
+                            ...editUserData,
+                            role: e.target.value,
+                          })
+                        }
+                      >
+                        <option value="patient">Paciente</option>
+                        <option value="doctor">Doctor</option>
+                        <option value="admin">Admin</option>
+                      </select>
+                    </td>
+                    <td>
+                      <button onClick={() => handleEditUserSave(user._id)}>
+                        Guardar
+                      </button>
+                      <button onClick={() => setEditingUserId(null)}>
+                        Cancelar
+                      </button>
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td>{user.name}</td>
+                    <td>{user.surname}</td>
+                    <td>{user.dni}</td>
+                    <td>{user.role}</td>
+                    <td>
+                      <button
+                        onClick={() => handleEditUserStart(user)}
+                        style={{ backgroundColor: "#d9b85f" }}
+                      >
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => handleDeleteUser(user._id)}
+                        style={{ backgroundColor: "#D9775F" }}
+                      >
+                        Eliminar
+                      </button>
+                    </td>
+                  </>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  function appointmentsTable() {
+    return (
+      <div id="appointments_table">
+        <h2>Turnos</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Paciente</th>
+              <th>Doctor</th>
+              <th>Especialidad</th>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {appointments.map((appointment) => (
+              <tr key={appointment._id}>
+                {editingAppointmentId === appointment._id ? (
+                  <>
+                    <td>
+                      <input
+                        value={editAppointmentData.patient}
+                        onChange={(e) =>
+                          setEditAppointmentData({
+                            ...editAppointmentData,
+                            patient: e.target.value,
+                          })
+                        }
+                      />
+                    </td>
+                    <td>{appointment.doctor.name}</td>
+                    <td>{appointment.doctor.specialty}</td>
+                    <td>
+                      <input
+                        type="date"
+                        value={editAppointmentData.date}
+                        onChange={(e) =>
+                          setEditAppointmentData({
+                            ...editAppointmentData,
+                            date: e.target.value,
+                          })
+                        }
+                      />
+                    </td>
+                    <td>
+                      <input
+                        type="time"
+                        value={editAppointmentData.time}
+                        onChange={(e) =>
+                          setEditAppointmentData({
+                            ...editAppointmentData,
+                            time: e.target.value,
+                          })
+                        }
+                      />
+                    </td>
+                    <td>
+                      <select
+                        value={editAppointmentData.status}
+                        onChange={(e) =>
+                          setEditAppointmentData({
+                            ...editAppointmentData,
+                            status: e.target.value,
+                          })
+                        }
+                      >
+                        <option value="pendiente">Pendiente</option>
+                        <option value="cancelado">Cancelado</option>
+                        <option value="revisado">Revisado</option>
+                      </select>
+                    </td>
+                    <td>
+                      <button
+                        onClick={() =>
+                          handleEditAppointmentSave(appointment._id)
+                        }
+                      >
+                        Guardar
+                      </button>
+                      <button onClick={() => setEditingAppointmentId(null)}>
+                        Cancelar
+                      </button>
+                    </td>
+                  </>
+                ) : (
+                  <>
+                    <td>{appointment.patient}</td>
+                    <td>{appointment.doctor.name}</td>
+                    <td>{appointment.doctor.specialty}</td>
+                    <td>{appointment.date}</td>
+                    <td>{appointment.time}</td>
+                    <td>{appointment.status}</td>
+                    <td>
+                      <button
+                        onClick={() => handleEditAppointmentStart(appointment)}
+                        style={{ backgroundColor: "#d9b85f" }}
+                      >
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => handleDeleteAppointment(appointment._id)}
+                        style={{ backgroundColor: "#D9775F" }}
+                      >
+                        Eliminar
+                      </button>
+                    </td>
+                  </>
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+
+  useEffect(() => {
+    fetch("/api/admin/users", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) setUsers(data);
+      })
+      .catch(() => console.error("Error al obtener usuarios"));
+
+    fetch("/api/admin/appointments", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (Array.isArray(data)) setAppointments(data);
+      })
+      .catch(() => console.error("Error al obtener turnos"));
+  }, [token]);
+
   return (
     <div>
       <div id="header">
         <h1>Panel de admin</h1>
+        <img id="isologo" src={isologo} alt="Isologo" />
       </div>
       <div id="content">
         {error && <p style={{ color: "red" }}>{error}</p>}
@@ -130,205 +360,11 @@ function AdminPanel() {
         <button onClick={() => navigate("/admin/register-doctor")}>
           Registrar doctor
         </button>
-        {activeTable === "usuarios" && (
-          <div id="users_table">
-            <h2>Usuarios</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Usuario</th>
-                  <th>Rol</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user) => (
-                  <tr key={user._id}>
-                    {editingUserId === user._id ? (
-                      <>
-                        <td>
-                          <input
-                            value={editUserData.user}
-                            onChange={(e) =>
-                              setEditUserData({
-                                ...editUserData,
-                                user: e.target.value,
-                              })
-                            }
-                          />
-                        </td>
-                        <td>
-                          <select
-                            value={editUserData.role}
-                            onChange={(e) =>
-                              setEditUserData({
-                                ...editUserData,
-                                role: e.target.value,
-                              })
-                            }
-                          >
-                            <option value="patient">Paciente</option>
-                            <option value="doctor">Doctor</option>
-                            <option value="admin">Admin</option>
-                          </select>
-                        </td>
-                        <td>
-                          <button onClick={() => handleEditUserSave(user._id)}>
-                            Guardar
-                          </button>
-                          <button onClick={() => setEditingUserId(null)}>
-                            Cancelar
-                          </button>
-                        </td>
-                      </>
-                    ) : (
-                      <>
-                        <td>{user.user}</td>
-                        <td>{user.role}</td>
-                        <td>
-                          <button
-                            onClick={() => handleEditUserStart(user)}
-                            style={{ backgroundColor: "#d9b85f" }}
-                          >
-                            Editar
-                          </button>
-                          <button
-                            onClick={() => handleDeleteUser(user._id)}
-                            style={{ backgroundColor: "#D9775F" }}
-                          >
-                            Eliminar
-                          </button>
-                        </td>
-                      </>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
-
-        {activeTable === "turnos" && (
-          <div id="appointments_table">
-            <h2>Turnos</h2>
-            <table>
-              <thead>
-                <tr>
-                  <th>Paciente</th>
-                  <th>Doctor</th>
-                  <th>Especialidad</th>
-                  <th>Fecha</th>
-                  <th>Hora</th>
-                  <th>Estado</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {appointments.map((appointment) => (
-                  <tr key={appointment._id}>
-                    {editingAppointmentId === appointment._id ? (
-                      <>
-                        <td>
-                          <input
-                            value={editAppointmentData.patient}
-                            onChange={(e) =>
-                              setEditAppointmentData({
-                                ...editAppointmentData,
-                                patient: e.target.value,
-                              })
-                            }
-                          />
-                        </td>
-                        <td>{appointment.doctor.user}</td>
-                        <td>{appointment.doctor.specialty}</td>
-                        <td>
-                          <input
-                            type="date"
-                            value={editAppointmentData.date}
-                            onChange={(e) =>
-                              setEditAppointmentData({
-                                ...editAppointmentData,
-                                date: e.target.value,
-                              })
-                            }
-                          />
-                        </td>
-                        <td>
-                          <input
-                            type="time"
-                            value={editAppointmentData.time}
-                            onChange={(e) =>
-                              setEditAppointmentData({
-                                ...editAppointmentData,
-                                time: e.target.value,
-                              })
-                            }
-                          />
-                        </td>
-                        <td>
-                          <select
-                            value={editAppointmentData.status}
-                            onChange={(e) =>
-                              setEditAppointmentData({
-                                ...editAppointmentData,
-                                status: e.target.value,
-                              })
-                            }
-                          >
-                            <option value="pendiente">Pendiente</option>
-                            <option value="cancelado">Cancelado</option>
-                            <option value="revisado">Revisado</option>
-                          </select>
-                        </td>
-                        <td>
-                          <button
-                            onClick={() =>
-                              handleEditAppointmentSave(appointment._id)
-                            }
-                          >
-                            Guardar
-                          </button>
-                          <button onClick={() => setEditingAppointmentId(null)}>
-                            Cancelar
-                          </button>
-                        </td>
-                      </>
-                    ) : (
-                      <>
-                        <td>{appointment.patient}</td>
-                        <td>{appointment.doctor.user}</td>
-                        <td>{appointment.doctor.specialty}</td>
-                        <td>{appointment.date}</td>
-                        <td>{appointment.time}</td>
-                        <td>{appointment.status}</td>
-                        <td>
-                          <button
-                            onClick={() =>
-                              handleEditAppointmentStart(appointment)
-                            }
-                            style={{ backgroundColor: "#d9b85f" }}
-                          >
-                            Editar
-                          </button>
-                          <button
-                            onClick={() =>
-                              handleDeleteAppointment(appointment._id)
-                            }
-                            style={{ backgroundColor: "#D9775F" }}
-                          >
-                            Eliminar
-                          </button>
-                        </td>
-                      </>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+        {activeTable === "usuarios" && userTable()}
+        {activeTable === "turnos" && appointmentsTable()}
       </div>
     </div>
   );
 }
+
 export default AdminPanel;

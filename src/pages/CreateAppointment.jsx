@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import isologo from '../assets/isologo.png';
+import bgImage from '../assets/pexels-pavel-danilyuk.jpg';
 
 function DoctorSelection({ value, onChange }) {
   const [doctors, setDoctors] = useState([]);
@@ -25,7 +27,7 @@ function DoctorSelection({ value, onChange }) {
         <option value="">--Selecciona al profesional--</option>
         {doctors.map((doctor) => (
           <option key={doctor._id} value={doctor._id}>
-            {doctor.user} - {doctor.specialty}
+            {doctor.name} - {doctor.specialty}
           </option>
         ))}
       </select>
@@ -91,7 +93,7 @@ function RegisterAppointment() {
 
   async function handleAppointment() {
     setError("");
-    // checkeo de campos incompletos antes de enviar datos
+    // checkeo de campos incompletos antes de enviar
     if (!doctor || !payload.user || !date || !time) {
       return setError("No pueden quedar campos vacíos.");
     }
@@ -124,7 +126,8 @@ function RegisterAppointment() {
   return (
     <div>
       <div id="header">
-        <h1>Pedir un turno</h1>
+        <h1>Pedido de turno</h1>
+        <img id="isologo" src={isologo} alt="Isologo" />
       </div>
       <div id="content">
         <button onClick={() => navigate("/")}>Volver</button>
@@ -137,6 +140,7 @@ function RegisterAppointment() {
           </button>
           {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
+        <img id="bg_image" src={bgImage} alt="" />
       </div>
     </div>
   );

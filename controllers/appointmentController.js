@@ -4,7 +4,7 @@ export async function getAppointments(req, res) {
   try {
     const appointments = await appointmentModel
       .find({ patient: req.user.user })
-      .populate("doctor", "user specialty");
+      .populate("doctor", "name specialty");
     res.json(appointments);
   } catch (error) {
     res

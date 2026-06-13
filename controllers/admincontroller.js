@@ -4,27 +4,40 @@ import doctorModel from "../models/Doctor.js";
 import appointmentModel from "../models/appointment.js";
 
 export async function registerDoctor(req, res) {
-  const user = req.body.user.toLowerCase();
+  const name = req.body.name.toLowerCase();
+  const surname = req.body.surname.toLowerCase();
+  const dni = req.body.dni;
   const password = req.body.password;
   const specialty = req.body.specialty;
   const role = "doctor";
 
-  if (!user || !password)
-    return res.status(400).json({ message: "usuario y contraseña requeridos" });
+  if (!/^\d+$/.test(dni)) {
+    return res
+      .status(400)
+      .json({ message: "El DNI solo puede contener números." });
+  }
+
+  if (!name || !surname || !dni || !password || !specialty)
+    return res.status(400).json({ message: "No pueden quedar campos vacíos." });
 
   try {
-    const dbUser = await userModel.findOne({ user });
-    if (dbUser) return res.status(409).json({ message: "El doctor ya existe" });
+    const dbUser = await userModel.findOne({ dni });
+    if (dbUser)
+      return res
+        .status(409)
+        .json({ message: `El doctor o usuario con DNI ${dni} ya existe.` });
 
     const hashedPassword = await bcrypt.hash(password, 10);
     await doctorModel.create({
-      user,
+      name,
+      surname,
+      dni,
       password: hashedPassword,
       role,
       specialty,
     });
 
-    res.status(201).json({ message: "Doctor registrado correctamente" });
+    res.status(201).json({ message: "Doctor registrado correctamente." });
   } catch (error) {
     res
       .status(500)
@@ -46,7 +59,7 @@ export async function getUsers(req, res) {
 export async function updateUser(req, res) {
   try {
     const updated = await userModel.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+      returnDocument: "after",
       select: "-password",
     });
     res.json(updated);
@@ -72,7 +85,7 @@ export async function getAppointments(req, res) {
   try {
     const appointments = await appointmentModel
       .find()
-      .populate("doctor", "user specialty");
+      .populate("doctor", "name surname specialty");
     res.json(appointments);
   } catch (error) {
     res
@@ -84,8 +97,8 @@ export async function getAppointments(req, res) {
 export async function updateAppointment(req, res) {
   try {
     const updated = await appointmentModel
-      .findByIdAndUpdate(req.params.id, req.body, { new: true })
-      .populate("doctor", "user specialty");
+      .findByIdAndUpdate(req.params.id, req.body, { returnDocument: "after" })
+      .populate("doctor", "name specialty");
     res.json(updated);
   } catch (error) {
     res
