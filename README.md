@@ -194,6 +194,8 @@ Usuario → Login → JWT guardado en localStorage
        → El backend verifica token y rol antes de responder
 ```
 
+---
+
 ## Créditos
 
 - Imagen de doctor: https://www.pexels.com/@ivan-s/
