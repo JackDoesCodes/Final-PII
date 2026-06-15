@@ -56,13 +56,12 @@ Este es un sistema de gestión de turnos médicos desarrollado con React + Vite 
 │   │   ├── Register.jsx         # Registro de paciente
 │   │   └── RegisterDoctor.jsx   # Registro de doctor (solo admin)
 │   ├── styles/                  # Archivos CSS por página
-│   ├── utils/
-│   │   └── stringManipulation.js# Funciones auxiliares de texto
 │   ├── App.jsx                  # Rutas del frontend
 │   └── main.jsx                 # Punto de entrada de React
 ├── tests/
 │   └── auth.test.js             # Tests de rutas de autenticación
 ├── utils/
+│   └── stringManipulation.js# Funciones auxiliares de texto
 ├── .env                         # Variables de entorno (no incluido en git)
 ├── app.js                       # Entry point del servidor
 ├── index.html                   # html root
