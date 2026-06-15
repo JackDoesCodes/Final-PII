@@ -19,6 +19,7 @@ import {
   createAppointment,
   updateAppointment,
   getDoctors,
+  getDoctorAppointments,
 } from "./controllers/appointmentController.js";
 
 // Middlewares de verificacion de token de sesión y rol con el cual se ingresa al sistema
@@ -75,6 +76,9 @@ app.get("/api/appointments", verifyToken, getAppointments);
 app.post("/api/create-appointment", verifyToken, createAppointment);
 // Ruta para actualizar el estado de un turno a "cancelado"
 app.patch("/api/update-appointment", verifyToken, updateAppointment);
+
+/* -------------------------------- Doctores -------------------------------- */
+app.get("/api/doctor/appointments", verifyToken, verifyRole("doctor"), getDoctorAppointments);
 
 /* -------------------------------- Admin -------------------------------- */
 // Ruta para registrar un doctor.

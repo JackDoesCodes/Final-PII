@@ -60,3 +60,14 @@ export async function getDoctors(req, res) {
       .json({ message: "Error al obtener doctores", error: error.message });
   }
 }
+
+export async function getDoctorAppointments(req, res) {
+  try {
+    const appointments = await appointmentModel
+      .find({ doctor: req.user.id })
+      .populate("doctor", "name surname specialty");
+    res.json(appointments);
+  } catch (error) {
+    res.status(500).json({ message: "Error al obtener turnos", error: error.message });
+  }
+}

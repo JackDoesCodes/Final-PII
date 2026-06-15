@@ -7,15 +7,17 @@ describe("Auth routes", () => {
   test("POST /api/auth/login con credenciales inválidas devuelve 401", async () => {
     const res = await request(app)
       .post("/api/auth/login")
-      .send({ user: "nohay", password: "malapassword" });
+      .send({ dni: "123", password: "malapassword" });
     expect(res.statusCode).toBe(401);
     expect(res.body.message).toBe("Credenciales inválidas");
   });
 
   test("POST /api/auth/login sin datos devuelve 400", async () => {
-    const res = await request(app).post("/api/auth/login").send({});
+    const res = await request(app)
+    .post("/api/auth/login")
+    .send({});
     expect(res.statusCode).toBe(400);
-    expect(res.body.message).toBe("Usuario y contraseña requeridos");
+    expect(res.body.message).toBe("DNI y contraseña requeridos");
   });
 
   afterAll(async () => {

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { capitalizeWords } from "../../utils/stringManipulation";
 import isologo from '../assets/isologo.png';
-import bgImage from '../assets/pexels-gustavo-fring.jpg';
+import bgImage from '../assets/pexels-ivan-s.jpg';
 
 function Appointments() {
   const [appointments, setAppointments] = useState([]);

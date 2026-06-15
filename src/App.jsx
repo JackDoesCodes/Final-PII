@@ -5,11 +5,20 @@ import Register from "./pages/Register";
 import CreateAppointment from "./pages/CreateAppointment";
 import Appointments from "./pages/Appointments";
 import RegisterDoctor from "./pages/RegisterDoctor";
+import DoctorPanel from "./pages/DoctorPanel";
 import AdminPanel from "./pages/AdminPanel";
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem("token");
   if (!token) return <Navigate to="/login" />;
+  return children;
+}
+
+function DoctorRoute({ children }) {
+  const token = localStorage.getItem("token");
+  if (!token) return <Navigate to="/login" />;
+  const payload = JSON.parse(atob(token.split(".")[1]));
+  if (payload.role !== "doctor") return <Navigate to="/" />;
   return children;
 }
 
@@ -42,6 +51,14 @@ function App() {
             <PrivateRoute>
               <Appointments />
             </PrivateRoute>
+          }
+        />
+        <Route
+          path="/doctor/panel"
+          element={
+            <DoctorRoute>
+              <DoctorPanel />
+            </DoctorRoute>
           }
         />
         <Route

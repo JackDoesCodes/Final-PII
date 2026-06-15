@@ -33,6 +33,11 @@ function Home() {
               Panel de admin
             </button>
           )}
+          {payload.role === "doctor" && (
+            <button onClick={() => navigate("/doctor/panel")}>
+              Turnos de mis pacientes
+            </button>
+          )}
           <img id="bg_image" src={bgImage} alt="" />
         </div>
       ) : (

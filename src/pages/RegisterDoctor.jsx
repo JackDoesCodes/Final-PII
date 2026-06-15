@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function RegisterDoctor() {
   const [name, setName] = useState("");
@@ -7,6 +8,7 @@ export default function RegisterDoctor() {
   const [password, setPassword] = useState("");
   const [specialty, setSpecialty] = useState("");
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   async function handleSubmit() {
     const token = localStorage.getItem("token");
@@ -29,6 +31,9 @@ export default function RegisterDoctor() {
         <h1>Registrar Doctor</h1>
       </div>
       <div id="content">
+        <button onClick={() => navigate("/admin/panel")}>
+          Volver
+        </button>
         <input
           placeholder="Nombre"
           onChange={(event) => setName(event.target.value)}
