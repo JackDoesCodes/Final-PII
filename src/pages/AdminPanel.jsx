@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import isologo from '../assets/isologo.png';
+import isologo from "../assets/isologo.png";
 
 function AdminPanel() {
   const [activeTable, setActiveTable] = useState("usuarios");
@@ -21,7 +21,8 @@ function AdminPanel() {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!res.ok) return setError("Error al eliminar usuario");
+      const data = await res.json();
+      if (!res.ok) return setError(data.message);
       setUsers((prev) => prev.filter((u) => u._id !== id));
     } catch {
       setError("Error al conectar con el servidor");
@@ -30,7 +31,12 @@ function AdminPanel() {
 
   function handleEditUserStart(user) {
     setEditingUserId(user._id);
-    setEditUserData({ user: user.user, role: user.role });
+    setEditUserData({
+      name: user.name,
+      surname: user.surname,
+      dni: user.dni,
+      role: user.role,
+    });
   }
 
   async function handleEditUserSave(id) {

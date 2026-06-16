@@ -72,9 +72,21 @@ export async function updateUser(req, res) {
 
 export async function deleteUser(req, res) {
   try {
+    const hasAppointments = await appointmentModel.exists({
+      doctor: req.params.id,
+    });
+    if (hasAppointments) {
+      return res
+        .status(409)
+        .json({
+          message:
+            "No se puede eliminar ya que el doctor tiene turnos asociados. Elimine los turnos primero.",
+        });
+    }
     await userModel.findByIdAndDelete(req.params.id);
     res.json({ message: "Usuario eliminado" });
   } catch (error) {
+    console.log("Error completo:", error);
     res
       .status(500)
       .json({ message: "Error al eliminar usuario", error: error.message });
